@@ -1,10 +1,16 @@
+<!DOCTYPE html><html lang="en-US">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet"  href="http://code.jquery.com/mobile/git/jquery.mobile-git.css" /> 
+<link rel="stylesheet" href="https://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.css" />
+</head>
+<body>
 {{if response.error:}}<div class='alert alert-error'>{{=response.error}}</div>{{pass}}
 {{if response.warning:}}<div class='alert alert-warning'>{{=response.warning}}</div>{{pass}}
 {{if response.information:}}<div class='alert alert-info'>{{=response.information}}</div>{{pass}}
 {{if response.confirmation:}}<div class='alert alert-success'>{{=response.confirmation}}</div>{{pass}}
 {{if response.flash:}}<div class='alert alert-success'>{{=response.flash}}</div>{{pass}}
-{{try:}}{{=B(title)}}<br />
-{{except:}}{{pass}}
 {{try:}}{{=details_btn}}
 {{except:}}{{pass}}
 {{try:}}
@@ -12,11 +18,24 @@
 {{=XML(response.json(label))}}<br/>
 {{=XML(response.json(type))}}<br/>
 {{except:}}{{pass}}
-<div data-role='page' data-theme='b'>
+<div data-role='page' data-theme='a'>
 <div data-role='content'>
-<div data-role='header'> Header </div>
+<div data-role='header'> {{try:}}{{=B(title)}}{{except:}}{{pass}} </div>
 {{try:}}{{=form}}
 {{except:}}{{pass}}
-<div data-role='footer'> Footer </div>
+<div data-role='footer'> </div>
 </div>
 </div>
+<script type="text/javascript">
+var inputs = document.getElementsByClassName('date string');
+for(var i=0; i<inputs.length;i++) 
+{inputs[i].setAttribute('data-role','date');
+inputs[i].setAttribute('data-inline','true');}
+</script>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script> 
+<script src="https://rawgithub.com/jquery/jquery-ui/1-10-stable/ui/jquery.ui.datepicker.js"></script>
+<script src="http://code.jquery.com/mobile/git/jquery.mobile-git.js"></script> 
+<script src="https://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.js"></script>
+</script>   
+</body>
