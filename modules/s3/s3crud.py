@@ -395,7 +395,43 @@ class S3CRUD(S3Method):
                                           message=message,
                                           subheadings=subheadings,
                                           format=representation)
+\        
+        elif representation == "m":
+            response.view = self._view(r, "mobile.html")
+            crud_string = self.crud_string
+            message = crud_string(tablename, "msg_record_created")
+            subheadings = _config("subheadings")
+            #fields = [f for f in table.fields
+            #               if table[f].writable]
+            type = [f.type for f in table if f.writable]
+            label = [f.label for f in table if f.writable]    
+            fields = [f.name for f in table if f.writable]    
+            #import json
+            #SEPARATORS = (",", ":")
+            # converted to json in the view as json dump from here outputs with
+            # html 
+            output["fields"]=fields  
+            output["label"]=label  
+            output["type"]=type
             
+        elif representation == "m1":
+            response.view = self._view(r, "mobile.html")
+            crud_string = self.crud_string
+            message = crud_string(tablename, "msg_record_created")
+            subheadings = _config("subheadings")
+            output["title"] = crud_string(tablename, "label_create")
+            output["details_btn"] = ""
+            table = resource.table
+            output["form"] = self.sqlform(request=request,
+                                          resource=resource,
+                                          data=self.data,
+                                          onvalidation=onvalidation,
+                                          onaccept=onaccept,
+                                          #link=link,
+                                          message=message,
+                                          subheadings=subheadings,
+                                          format=representation)         
+     
         elif representation == "csv":
             import cgi
             import csv

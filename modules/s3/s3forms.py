@@ -324,6 +324,8 @@ class S3SQLDefaultForm(S3SQLForm):
         if format == "plain":
             # Default formstyle works best when we have no formatting
             formstyle = "table3cols"
+        if format == "m":
+            formstyle = "divs"     
         else:
             formstyle = settings.formstyle
 
