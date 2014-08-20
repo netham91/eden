@@ -218,6 +218,7 @@ class S3CRUD(S3Method):
                    _config("onaccept")
 
         if r.interactive:
+
             crud_string = self.crud_string
 
             # Page details
@@ -227,11 +228,9 @@ class S3CRUD(S3Method):
                 if representation in ("popup", "iframe"):
                     response.view = self._view(r, "popup.html")
                     output["caller"] = request.vars.caller
-                elif representation in ("m"):
-                    response.view = self._view(r, "mobile2.html")    
                 else:
                     response.view = self._view(r, "create.html")
-                representation = "html"       
+
                 # Title
                 if r.component:
                     title = crud_string(r.tablename, "title_display")
@@ -331,7 +330,7 @@ class S3CRUD(S3Method):
 
             # Interim save button
             self._interim_save_button()
-            representation = "html"
+            
             # Get the form
             output["form"] = self.sqlform(request=request,
                                           resource=resource,
@@ -435,59 +434,12 @@ class S3CRUD(S3Method):
             output["title"] = crud_string(tablename, "label_create")
             output["details_btn"] = ""
             table = resource.table
-            
-            # Copy record
-            from_table = None
-            from_record = r.get_vars.get("from_record", None)
-            map_fields = r.get_vars.get("from_fields", None)
-
-            if from_record:
-                del r.get_vars["from_record"] # forget it
-                if from_record.find(".") != -1:
-                    from_table, from_record = from_record.split(".", 1)
-                    from_table = current.db.get(from_table, None)
-                    if not from_table:
-                        r.error(404, current.ERROR.BAD_RESOURCE)
-                else:
-                    from_table = table
-                try:
-                    from_record = long(from_record)
-                except:
-                    r.error(404, current.ERROR.BAD_RECORD)
-                authorised = current.auth.s3_has_permission("read",
-                                                    from_table._tablename,
-                                                    from_record)
-
-            # Component join
-            link = None
-            if r.component:
-                if resource.link is None:
-                    # No link table - direct component
-                    link = self._embed_component(resource, record=r.id)
-                    pkey = resource.pkey
-                    fkey = resource.fkey
-                    field = table[fkey]
-                    value = r.record[pkey]
-                    field.comment = None
-                    field.default = value
-                    field.update = value
-                    if r.http == "POST":
-                        r.post_vars.update({fkey: value})
-                    field.readable = False
-                    field.writable = False
-                else:
-                    link = Storage(resource=resource.link, master=r.record)
- 
             output["form"] = self.sqlform(request=request,
                                           resource=resource,
                                           data=self.data,
-                                          record_id=None,
-                                          from_table=from_table,
-                                          from_record=from_record,
-                                          map_fields=map_fields,
                                           onvalidation=onvalidation,
                                           onaccept=onaccept,
-                                          link=link,
+                                          #link=link,
                                           message=message,
                                           subheadings=subheadings,
                                           format=representation)
